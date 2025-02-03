@@ -1,0 +1,41 @@
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-top: 60px;
+    background-color: #dad5d5;
+    border-top: 1px solid #b0a8a8;
+  }
+  
+  .footer p {
+    color: #666;
+  }
+  
+  .footer nav a {
+    margin-left: 20px;
+    color: #666;
+    text-decoration: none;
+  }
+  
+  .footer nav a:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .footer {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .footer nav {
+      margin-top: 10px;
+    }
+  
+    .footer nav a {
+      margin: 0 10px;
+    }
+  }
+  
+  

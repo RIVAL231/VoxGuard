@@ -1,0 +1,136 @@
+.results {
+  margin: 20px auto;
+  padding: 25px;
+  border-radius: 12px;
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.results:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.success {
+  border-left: 6px solid #10b981;
+}
+
+.error {
+  border-left: 6px solid #ef4444;
+}
+
+.debug {
+  background: #f3f4f6;
+  padding: 15px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  color: #4b5563;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 1.5rem;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s ease;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row:hover {
+  background-color: #f9fafb;
+}
+
+.row strong {
+  min-width: 120px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.probList {
+  display: grid;
+  gap: 8px;
+  padding-left: 20px;
+  list-style-type: none;
+}
+
+.probList li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.probList li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.results {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.insights {
+  margin-top: 30px;
+  padding: 25px;
+  background-color: #eef6ff; /* Slightly softer blue */
+  border-radius: 10px;
+  border-left: 6px solid #2563eb; /* Darker blue for better contrast */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  animation: fadeIn 0.4s ease-out;
+  transition: transform 0.2s ease-in-out;
+}
+
+.insights:hover {
+  transform: scale(1.02); /* Slight lift effect on hover */
+}
+
+.insights h3 {
+  color: #1e3a8a; /* Deep blue for readability */
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.insights p {
+  color: #1e3a8a;
+  line-height: 1.7;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+

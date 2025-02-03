@@ -1,0 +1,94 @@
+.hero {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #29507e 0%, #1a365d 100%);
+  color: white;
+  padding: 2rem;
+}
+
+.content {
+  max-width: 900px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(45deg, #ffffff 30%, #e2e8f0 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mainText {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+}
+
+.subText {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #cbd5e1;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat h3 {
+  font-size: 2rem;
+  color: #60a5fa;
+  margin-bottom: 0.5rem;
+}
+
+.stat p {
+  color: #e2e8f0;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.primaryCta, .secondaryCta {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.primaryCta {
+  background-color: #60a5fa;
+  color: white;
+}
+
+.primaryCta:hover {
+  background-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.secondaryCta {
+  background-color: transparent;
+  border: 2px solid #60a5fa;
+  color: #60a5fa;
+}
+
+.secondaryCta:hover {
+  background-color: #60a5fa;
+  color: white;
+  transform: translateY(-2px);
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="128" fill="#0A0F4F"/>
+
+  <!-- Waveform -->
+  <path d="M48 128h16v40H48zM80 104h16v64H80zM112 120h16v48h-16zM144 96h16v72h-16zM176 112h16v56h-16zM208 128h16v40h-16z" fill="#FFD700"/>
+
+  <!-- Shield -->
+  <path d="M128 48l48 32v56c0 36-32 72-48 72s-48-36-48-72V80l48-32z" fill="#FFD700"/>
+
+  <!-- Magnifying Glass -->
+  <circle cx="192" cy="192" r="20" stroke="#FFD700" stroke-width="8"/>
+  <line x1="208" y1="208" x2="224" y2="224" stroke="#FFD700" stroke-width="8" stroke-linecap="round"/>
+</svg>
