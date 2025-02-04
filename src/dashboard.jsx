@@ -1,13 +1,35 @@
-import React from "react";
-import GraphComponent from "./components/GraphComponent";
+import React, { useEffect, useState } from 'react';
+import GraphComponent from './components/GraphComponent';
 
 const Dashboard = () => {
-    const handleRedirect = () => {
-        // Redirect to the Analytics page
-        window.location.href = "/analyse";
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const data = localStorage.getItem('userData');
+    if (data) {
+      setUserData(JSON.parse(data));
     }
+  }, []);
+
+  const handleRedirect = () => {
+    // Redirect to the Analytics page
+    window.location.href = "/analyse";
+  }
+  const handleLogout=()=>{
+    localStorage.clear();
+    window.location.href="/login";
+  }
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
+
+  const forgeryScansData = userData.forgeryScansDoneEveryMonth;
+  const forgeryDetectionsData = userData.forgeryDetectedEveryMonth;
+  const labels = userData.forgeryScansDoneEveryMonth.map(item => item.month);
+
   return (
-    <div style={{ display: "flex", height: "100vh", backgroundColor: "#f8f9fa" }}>
+    <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8f9fa' }}>
       
       {/* Left Sidebar */}
       <aside style={{ width: "250px", backgroundColor: "#ffffff", padding: "20px", borderRight: "1px solid #ddd"}}>
@@ -16,9 +38,46 @@ const Dashboard = () => {
 </svg>
 VoxGuard
 </h1>
-        <button onClick={handleRedirect} style={{ width: "100%", padding: "10px", backgroundColor: "black", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+        <button onClick={handleLogout} style={{position:"relative",
+        left:"5px",
+      backgroundColor: "black",
+      color: "white",
+      fontSize: "16px",
+      marginBottom:"20px",
+      width: "200px",
+      // padding: "10px 15px",
+      border: "none",
+      borderRadius: "10px",
+      cursor: "pointer",
+      padding:"15px",
+      // borderRadius: "16px",
+background: "rgba(0, 0, 0, 0.85)",
+
+/* Button */
+boxShadow: "0px 10px 22px 0px rgba(0, 0, 0, 0.40), 0px 2.289px 5.035px 0px rgba(0, 0, 0, 0.05), 0px 0.602px 1.325px 0px rgba(0, 0, 0, 0.01)"
+      }}>
+          Logout
+        </button>
+        <button onClick={handleRedirect} style={{position:"relative",
+        left:"5px",
+      backgroundColor: "black",
+      color: "white",
+      fontSize: "16px",
+      width: "200px",
+      // padding: "10px 15px",
+      border: "none",
+      borderRadius: "10px",
+      cursor: "pointer",
+      padding:"15px",
+      // borderRadius: "16px",
+background: "rgba(0, 0, 0, 0.85)",
+
+/* Button */
+boxShadow: "0px 10px 22px 0px rgba(0, 0, 0, 0.40), 0px 2.289px 5.035px 0px rgba(0, 0, 0, 0.05), 0px 0.602px 1.325px 0px rgba(0, 0, 0, 0.01)"
+      }}>
           + Analyse Audio
         </button>
+
         <nav style={{ marginTop: "20px" }}>
           <ul style={{ listStyle: "none", padding: "10px" }}>
             <li style={{marginBottom:"10px",backgroundColor:"#0000000A",borderRadius:"10px",paddingLeft:"10px",paddingTop:"10px"}}><span style={{display:"inlineBlock"}}><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,50 +120,52 @@ VoxGuard
       </aside>
 
       {/* Main Dashboard */}
-      <main style={{ flex: "1", padding: "20px" }}>
-        <h2 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "20px" }}>Overview</h2>
-        
-        <div style={{ display: "flex", gap: "20px" }}>
-          {/* Total Analyzed */}
-          <div style={{ flex: "1", backgroundColor: "#e8ebfa", padding: "20px", borderRadius: "10px" }}>
-            <p style={{ fontSize: "14px", color: "#555" }}>Total Analyzed</p>
-            <h3 style={{ fontSize: "24px", fontWeight: "bold" }}>7,265</h3>
-            <span style={{ fontSize: "12px", color: "green" }}>+11.01%</span>
+      <main style={{ flex: 1, padding: '20px' }}>
+        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Dashboard</h2>
+
+        <div style={{ display: 'flex', gap: '20px' }}>
+          {/* Forgery Scans Done */}
+          <div style={{ flex: '1', backgroundColor: '#e0f2ff', padding: '20px', borderRadius: '10px' }}>
+            <p style={{ fontSize: '14px', color: '#555' }}>Forgery Scans Done</p>
+            <h3 style={{ fontSize: '24px', fontWeight: 'bold' }}>{userData.numberOfForgeryScansDone}</h3>
+            <span style={{ fontSize: '12px', color: 'green' }}>+11.01%</span>
           </div>
 
           {/* Forgery Detected */}
-          <div style={{ flex: "1", backgroundColor: "#daeaff", padding: "20px", borderRadius: "10px" }}>
-            <p style={{ fontSize: "14px", color: "#555" }}>Forgery Detected</p>
-            <h3 style={{ fontSize: "24px", fontWeight: "bold" }}>7,265</h3>
-            <span style={{ fontSize: "12px", color: "red" }}>-0.03%</span>
+          <div style={{ flex: '1', backgroundColor: '#daeaff', padding: '20px', borderRadius: '10px' }}>
+            <p style={{ fontSize: '14px', color: '#555' }}>Forgery Detected</p>
+            <h3 style={{ fontSize: '24px', fontWeight: 'bold' }}>{userData.numberOfForgeryDetected}</h3>
+            <span style={{ fontSize: '12px', color: 'red' }}>-0.03%</span>
           </div>
         </div>
 
         {/* Graphs Placeholder */}
-        <div style={{ marginTop: "20px", backgroundColor: "#ffffff", padding: "20px", borderRadius: "10px", height: "300px", border: "1px solid #ddd" }}>
-          <p style={{ fontSize: "16px", fontWeight: "bold" }}>Graph Analysis</p>
-          <div style={{ height: "230px" }}>
-            <GraphComponent />
+        <div style={{ marginTop: '20px', backgroundColor: '#ffffff', padding: '20px', borderRadius: '10px', height: '300px', border: '1px solid #ddd' }}>
+          <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Graph Analysis</p>
+          <div style={{ height: '230px' }}>
+            <GraphComponent labels={labels} forgeryScansData={forgeryScansData} forgeryDetectionsData={forgeryDetectionsData} />
           </div>
         </div>
       </main>
 
       {/* Right Sidebar */}
-      <aside style={{ width: "280px", backgroundColor: "#ffffff", padding: "20px", borderLeft: "1px solid #ddd" }}>
-        <h3 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "10px" }}>Notifications</h3>
+      <aside style={{ width: '280px', backgroundColor: '#ffffff', padding: '20px', borderLeft: '1px solid #ddd' }}>
+        <h3 style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '10px' }}>Notifications</h3>
         
         {/* Notifications Placeholder */}
-        <div style={{ fontSize: "14px", color: "#555", marginBottom: "20px" }}>
+        <div style={{ fontSize: '20px', color: '#555', marginBottom: '20px' }}>
           <p>⚠️ Fake Contact Detected - Just now</p>
           <p>📢 New Update Available - Today, 11:59 AM</p>
         </div>
 
-        <h3 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "10px" }}>Favorite Contacts</h3>
+        <h3 style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '10px' }}>Favorite Contacts</h3>
         
         {/* Contacts Placeholder */}
-        <ul style={{ listStyle: "none", padding: "0" }}>
-          {["Sankalp Sharma", "Simar Bhatia", "Arth Agrawal", "Archi Dhoot", "Shreya Sharma"].map((name) => (
-            <li key={name} style={{ padding: "5px 0", fontSize: "16px" }}>{name}</li>
+        <ul style={{ listStyle: 'none', padding: '0' }}>
+          {userData.favouriteContacts.map((contact) => (
+            <li key={contact.name} style={{ marginBottom: '10px' }}>
+              <p style={{ fontSize: '20px', color: '#555' }}>{contact.name}</p>
+            </li>
           ))}
         </ul>
       </aside>

@@ -80,25 +80,6 @@ export default function Analytics() {
   }
 
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Audio Forensics Analyzer</h1>
-        <FileUpload onFileUpload={handleFileUpload} isLoading={loading} />
-        <ReactMediaRecorder
-          audio
-          onStop={handleAudioStop}
-          render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
-            <div className={styles.recorder}>
-              <p>{status}</p>
-              <button onClick={startRecording} disabled={loading}>Start Recording</button>
-              <button onClick={stopRecording} disabled={loading}>Stop Recording</button>
-              {mediaBlobUrl && <audio src={mediaBlobUrl} controls />}
-            </div>
-          )}
-        />
-        {loading && <div className={styles.loading}>Processing audio file...</div>}
-        {result && <ResultDisplay result={result} />}
-      </main>
-    </div>
+   <></>
   )
 }

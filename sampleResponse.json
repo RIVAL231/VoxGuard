@@ -1,0 +1,51 @@
+{
+    "username": "SankalpSharma",
+    "email": "sankalpsharma250@gmail.com",
+    "password": "sankalp231",
+    "favouriteContacts": [
+      {
+        "name": "Archi Dhoot",
+        "audioSamplePath": "/audio_samples/archi_sample.mp3"
+      },
+      {
+        "name": "Arth Agrawal",
+        "audioSamplePath": "/audio_samples/arth_sample.mp3"
+      },
+      {
+        "name": "Simar Bhatia",
+        "audioSamplePath": "/audio_samples/simar_sample.mp3"
+      }
+
+    ],
+    "numberOfForgeryScansDone": 981,
+    "numberOfForgeryDetected": 413,
+    "forgeryScansDoneEveryMonth": [
+        200,
+        150,
+        100,
+        50,
+        150,
+        231,
+        320,
+        430,
+        125,
+        200,
+        0,
+        0
+
+    ],
+    "forgeryDetectedEveryMonth": [
+        10,
+        5,
+        32,
+        20,
+        34,
+        2,
+        65,
+        0,
+        31,
+        13,
+        0,
+        0
+    ]
+  }

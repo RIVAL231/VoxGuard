@@ -1,9 +1,10 @@
 # audio_augmentation.py
 
-from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
+from pydub import AudioSegment
 import numpy as np
 import librosa
 from sklearn.preprocessing import MinMaxScaler
+from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
 
 # Define audio augmentation pipeline
 audio_augmentations = Compose([
@@ -14,19 +15,31 @@ audio_augmentations = Compose([
 ])
 
 def augment_audio(y, sr):
-    """
-    Applies the defined augmentations to the audio signal.
-    """
+    """Applies the defined augmentations to the audio signal."""
     augmented_y = audio_augmentations(samples=y, sample_rate=sr)
     return augmented_y
 
 def process_audio(file_path, sr=11000, n_mels=256, max_time_frames=256, apply_augmentation=True):
-    """
-    Process audio file with optional augmentation and return mel spectrogram.
-    """
+    """Process audio file with optional augmentation and return mel spectrogram."""
     try:
-        y, original_sr = librosa.load(file_path, sr=sr)
-
+        # Load audio with pydub (uses ffmpeg backend)
+        audio = AudioSegment.from_file(file_path)
+        
+        # Convert to mono if needed
+        if audio.channels > 1:
+            audio = audio.set_channels(1)
+        
+        # Set sample rate
+        audio = audio.set_frame_rate(sr)
+        
+        # Convert to numpy array and normalize
+        samples = np.array(audio.get_array_of_samples(), dtype=np.float32)
+        if len(samples) == 0:
+            raise ValueError("Empty audio file")
+        
+        # Normalize to [-1, 1] range
+        y = samples / np.max(np.abs(samples))
+        
         if apply_augmentation:
             y = augment_audio(y, sr)
 
@@ -49,6 +62,7 @@ def process_audio(file_path, sr=11000, n_mels=256, max_time_frames=256, apply_au
         mel_spectrogram_normalized = mel_spectrogram_normalized[..., np.newaxis]
 
         return mel_spectrogram_normalized
+
     except Exception as e:
         print(f"Error processing file {file_path}: {e}")
         return None

@@ -10,6 +10,7 @@ import Dashboard from './dashboard'
 import AudioUpload from './UploadAnalyse'
 import AudioRecorder from './AudioRecorder'
 import Analysis from './Analysis'
+import ProtectedRoute from './ProtectedRoute'
 
 
 export default function App() {
@@ -17,14 +18,12 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/analytics" element={<Analytic />} /> */}
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
-        <Route path="/analyse" element={<Analysis />} />
-        {/* <Route path='/live' element={<AudioRecorder/>}/> */}
+        <Route path='/dashboard' element={<ProtectedRoute element={<Dashboard/>}/>} />
+        <Route path="/analyse" element={<ProtectedRoute element={<Analysis />} />} />
       </Routes>
-      <Analytics />
+      <Analytic />
     </Router>
   )
 }

@@ -5,20 +5,20 @@ import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement
 // Register required Chart.js components
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-const GraphComponent = () => {
+const GraphComponent = ({forgeryScansData,forgeryDetectionsData}) => {
   const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug","Sep","Oct","Nov","Dec"],
     datasets: [
       {
         label: "Total Calls",
-        data: [12000, 15000, 14000, 20000, 25000, 23000, 27000],
+        data: forgeryScansData,
         borderColor: "black",
         borderWidth: 2,
         fill: false,
       },
       {
         label: "Forged Calls",
-        data: [5000, 7000, 6500, 10000, 12000, 11000, 14000],
+        data: forgeryDetectionsData,
         borderColor: "blue",
         borderWidth: 2,
         fill: false,

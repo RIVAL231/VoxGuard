@@ -1,19 +1,17 @@
-# app.py
-
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from starlette.requests import Request
 import tensorflow as tf
 import numpy as np
-import librosa
 import shutil
 import os
-from typing import Dict, Any
+import traceback
 import json
+import google.generativeai as genai
 from audio_augmentation import process_audio
+from compare import find_impersonated_person
+from typing import Dict, Any
+from datetime import datetime
 
 app = FastAPI()
 
@@ -26,18 +24,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# # Set up templates and static files etc etc
-# app.mount("/static", StaticFiles(directory="static"), name="static")
-# templates = Jinja2Templates(directory="templates")
+# Initialize Gemini
+GOOGLE_API_KEY = "AIzaSyDLukT2LcjiJfx5K1y2EwMBYcghpxLECdo"
+genai.configure(api_key=GOOGLE_API_KEY)
+model = genai.GenerativeModel('gemini-pro')
 
-# Load your model
+# Load your ML model
 MODEL_PATH = os.path.join(os.getcwd(), 'model.h5')
-model = tf.keras.models.load_model(MODEL_PATH)
+audio_model = tf.keras.models.load_model(MODEL_PATH)
 
-def get_class_message(predicted_class):
-    """
-    Gets detailed message for predicted class.
-    """
+# Define contact audios for comparison
+contact_audios = {
+    "Archi Dhoot": 'D:/audio_forensics/ArchiDhoot.mp3',
+    "Arth Agrawal": 'D:/audio_forensics/ArthAgrawal.mp3',
+    "Simar Bhatia": 'D:/audio_forensics/SimarBhatia.mp3',
+}
+
+def get_class_message(predicted_class: int) -> str:
     class_messages = {
         0: "Audio is real",
         1: "Audio is fake and forgery is Speech Synthesis",
@@ -49,18 +52,28 @@ def get_class_message(predicted_class):
     }
     return class_messages.get(predicted_class, "Unknown class")
 
-def convert_numpy_types(obj: Any) -> Any:
-    if isinstance(obj, np.integer):
-        return int(obj)
-    elif isinstance(obj, np.floating):
-        return float(obj)
-    elif isinstance(obj, np.ndarray):
-        return obj.tolist()
-    return obj
+async def get_llm_analysis(message: str, probabilities: list) -> str:
+    """
+    Get insight text from Gemini
+    """
+    try:
+        prompt = f"""Given this audio analysis:
+        Detection Result: {message}
+        Confidence Scores: {probabilities}
+        
+        Provide a concise, single-paragraph analysis explaining the detection result and its implications.
+        Focus on explaining the type of forgery detected (if any) and its potential impact.
+        Keep the response under 150 words and make it informative yet easy to understand.
+        """
 
-@app.get("/", response_class=HTMLResponse)
-async def serve_index(request: Request):
-    return ("hello")
+        response = model.generate_content(prompt)
+        return response.text.strip()
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error getting LLM analysis: {str(e)}"
+        )
 
 @app.post("/predict/")
 async def predict(file: UploadFile = File(...)):
@@ -70,36 +83,51 @@ async def predict(file: UploadFile = File(...)):
         
         with open(file_location, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
-
+        
         # Process audio with augmentation
         spectrogram = process_audio(file_location, apply_augmentation=True)
         
         if spectrogram is None:
             raise HTTPException(status_code=400, detail="Failed to process audio file")
-
+            
         spectrogram = np.expand_dims(spectrogram, axis=0)
-        predictions = model.predict(spectrogram)
+        predictions = audio_model.predict(spectrogram)
         predicted_class = np.argmax(predictions, axis=-1)[0]
-        probabilities = (predictions * 100).astype(int).tolist()
-
+        probabilities = (predictions * 100).astype(int).tolist()[0]  # Get first list item
         message = get_class_message(predicted_class)
         
-        result = {
-            "file_name": file.filename,
-            "predicted_class": int(predicted_class),
-            "probabilities": probabilities,
-            "message": message,
-            "status": "success"
+        # Get maximum probability
+        max_probability = max(probabilities)
+        
+        # Get LLM insight
+        insight_text = await get_llm_analysis(message, probabilities)
+        
+        # Perform audio comparison
+        impersonated_person, max_similarity, similarity_scores = find_impersonated_person(file_location, contact_audios)
+        
+        # Format response according to specified structure
+        structured_response = {
+            "forgeryType": message,
+            "forgeryProbability": max_probability,
+            "result": insight_text,
+            "timestamp": datetime.now().isoformat(),
+            "impersonatedPerson": impersonated_person,
+            "maxSimilarity": max_similarity,
+            "similarityScores": similarity_scores
         }
-
-        return result
+        
+        return structured_response
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        error_message = f"Error processing file {file.filename}: {str(e)}"
+        traceback_str = ''.join(traceback.format_tb(e.__traceback__))
+        full_error_message = f"{error_message}\n{traceback_str}"
+        raise HTTPException(status_code=500, detail=full_error_message)
+        
     finally:
         if os.path.exists(file_location):
             os.remove(file_location)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)

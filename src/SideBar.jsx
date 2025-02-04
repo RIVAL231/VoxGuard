@@ -20,7 +20,23 @@ const SideBar = () => {
 </svg>
 VoxGuard
 </h1>
-        <button  style={{ width: "100%", padding: "10px", backgroundColor: "black", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+        <button  style={ {position:"relative",
+        left:"5px",
+      backgroundColor: "black",
+      color: "white",
+      fontSize: "16px",
+      width: "200px",
+      // padding: "10px 15px",
+      border: "none",
+      borderRadius: "10px",
+      cursor: "pointer",
+      padding:"15px",
+      // borderRadius: "16px",
+background: "rgba(0, 0, 0, 0.85)",
+
+/* Button */
+boxShadow: "0px 10px 22px 0px rgba(0, 0, 0, 0.40), 0px 2.289px 5.035px 0px rgba(0, 0, 0, 0.05), 0px 0.602px 1.325px 0px rgba(0, 0, 0, 0.01)"
+      }}>
           + Analyse Audio
         </button>
         <nav style={{ marginTop: "20px" }}>
