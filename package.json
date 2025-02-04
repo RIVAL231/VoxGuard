@@ -12,16 +12,20 @@
   "dependencies": {
     "@vercel/analytics": "^1.4.1",
     "axios": "^1.7.9",
+    "chart.js": "^4.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "file-saver": "^2.0.5",
     "mongodb": "^6.13.0",
     "mongoose": "^8.9.6",
     "multer": "^1.4.4",
     "multer-gridfs-storage": "^5.0.2",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.3",
+    "react-media-recorder": "^1.7.1",
     "react-router-dom": "^7.1.1"
   },
   "devDependencies": {

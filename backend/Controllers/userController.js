@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 
 // Existing login function
-export default async function userLogin(req, res) {
+export async function userLogin (req, res) {
   const { email, password } = req.body;
   
   try {

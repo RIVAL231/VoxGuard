@@ -34,7 +34,7 @@ export default function ResultDisplay({ result }) {
 
         const data = await response.json();
         setFinal(data.insights);
-        console.log('Insights:', data.insights);
+        console.log('Insights:', data?.insights);
       } catch (error) {
         console.error('Error getting insights:', error);
         setFinal({ error: 'Failed to get insights' });
@@ -84,7 +84,7 @@ export default function ResultDisplay({ result }) {
         )}
       </div> */}
       <div>
-      {finalResult && (
+      {finalResult?.candidates[0]?.content?.parts[0]?.text && (
           <div className={styles.insights}>
             <h3>Insights:</h3>
             {finalResult.error ? (
